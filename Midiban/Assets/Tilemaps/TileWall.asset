@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: TileWall
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 7482667652216324306, guid: e1218e702b9febe49acc1a81157a68d0, type: 3}
-  m_Color: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
+  m_Sprite: {fileID: 21300000, guid: b93b58280234da74a96fd22a4cf0d63c, type: 3}
+  m_Color: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
   m_Transform:
     e00: 1
     e01: 0

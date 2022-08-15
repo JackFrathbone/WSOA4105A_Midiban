@@ -4,7 +4,9 @@ using UnityEngine;
 public class PlayLineController : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] float _playSpeed;
+    public bool muted;
+    //How many seconds before moving to next line
+    [SerializeField] float _playTime;
 
     [Header("References")]
     //Notes are from lowest to high, lowest note at [0]
@@ -13,19 +15,39 @@ public class PlayLineController : MonoBehaviour
 
     private AudioSource _camAudioSource;
 
+    private GameManager _gameManager;
+
+    [Header("Data")]
+    private bool _resetNext;
+
     [Header("Data")]
     private Vector2 _startPos;
+    private float _timer;
 
     private void Start()
     {
         _camAudioSource = Camera.main.GetComponent<AudioSource>();
 
+        _gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
+
         _startPos = transform.position;
+        _timer = 1;
     }
 
     private void Update()
     {
-        transform.Translate(Vector2.right * _playSpeed * Time.deltaTime);
+        _timer -= 1 * Time.deltaTime;
+
+        if(_timer <= 0)
+        {
+            transform.position = new Vector2(transform.position.x + 1, transform.position.y);
+            _timer = _playTime;
+        }
+
+        if (_resetNext)
+        {
+            ResetPlayLine();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,9 +57,14 @@ public class PlayLineController : MonoBehaviour
             _camAudioSource.PlayOneShot(_shortNotes[GetNoteFromHeight(collision.transform.position.y)]);
         }
 
+        if (collision.CompareTag("NoteMuteable") && !muted)
+        {
+            _camAudioSource.PlayOneShot(_shortNotes[GetNoteFromHeight(collision.transform.position.y)]);
+        }
+
         if (collision.CompareTag("PlayLine"))
         {
-            ResetPlayLine();
+            _resetNext = true;
         }
     }
 
@@ -68,6 +95,8 @@ public class PlayLineController : MonoBehaviour
 
     public void ResetPlayLine()
     {
+        _resetNext = false;
+        _gameManager.CheckGoals();
         transform.position = _startPos;
     }
 }

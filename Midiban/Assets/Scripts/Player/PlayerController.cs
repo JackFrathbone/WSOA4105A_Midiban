@@ -40,7 +40,6 @@ public class PlayerController : MonoBehaviour
 
         if (!_moving && _againstObject)
         {
-            print("return");
             RoundToNearestHalf(_oldPos.x);
             RoundToNearestHalf(_oldPos.y);
             _newPos = _oldPos;
@@ -115,7 +114,7 @@ public class PlayerController : MonoBehaviour
                 _newPos = _oldPos;
             }
         }
-        else if (collision.collider.CompareTag("Note"))
+        else if (collision.collider.CompareTag("NoteMuteable"))
         {
             _againstObject = true;
 
@@ -145,7 +144,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Note"))
+        if (collision.collider.CompareTag("NoteMuteable"))
         {
             _againstObject = false;
         }
