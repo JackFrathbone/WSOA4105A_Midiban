@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     [Header("References")]
+    [SerializeField] GameObject _menu;
+
     [SerializeField] PlayLineController _playLineController;
 
     [SerializeField] Image _muteButton;
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] List<NoteGoal> _noteGoals;
     private bool _gamePassed;
+    private bool _menuOpen;
 
     public void ToggleMute()
     {
@@ -27,6 +30,22 @@ public class GameManager : MonoBehaviour
         else
         {
             _muteButton.sprite = _unMuteSprite;
+        }
+    }
+
+    public void ToggleMenu()
+    {
+        _menuOpen = !_menuOpen;
+
+        if (_menuOpen)
+        {
+            _menuOpen = true;
+            _menu.SetActive(true);
+        }
+        else
+        {
+            _menuOpen = false;
+            _menu.SetActive(false);
         }
     }
 
@@ -67,5 +86,10 @@ public class GameManager : MonoBehaviour
     public void LoadLevel(int i)
     {
         SceneManager.LoadScene(i);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
