@@ -865,7 +865,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -3740743737341993176, guid: 58ad67646258b1248b0961bb9db9f293, type: 3}
       propertyPath: _playTime
-      value: 0.8
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -3740743737341993176, guid: 58ad67646258b1248b0961bb9db9f293, type: 3}
       propertyPath: _playSpeed
