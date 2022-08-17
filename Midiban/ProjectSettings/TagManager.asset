@@ -9,6 +9,7 @@ TagManager:
   - NoteGoal
   - Note
   - NoteMuteable
+  - AudioController
   layers:
   - Default
   - TransparentFX

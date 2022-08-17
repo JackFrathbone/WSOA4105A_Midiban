@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using FMODUnity;
+using FMOD;
+using FMODUnityResonance;
 using UnityEngine;
 
 public class PlayLineController : MonoBehaviour
@@ -13,7 +16,7 @@ public class PlayLineController : MonoBehaviour
     [SerializeField] List<AudioClip> _shortNotes;
     //[SerializeField] List<AudioClip> _LongNotes;
 
-    private AudioSource _camAudioSource;
+   // private StudioEventEmitter _audioSource;
 
     private GameManager _gameManager;
 
@@ -26,40 +29,47 @@ public class PlayLineController : MonoBehaviour
 
     private void Start()
     {
-        _camAudioSource = Camera.main.GetComponent<AudioSource>();
+        //_audioSource = GameObject.FindGameObjectWithTag("AudioController").GetComponent<StudioEventEmitter>();
 
         _gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
 
         _startPos = transform.position;
         _timer = 1;
+
+        MusicManager.beatUpdated += AdvanceLine;
     }
 
     private void Update()
     {
+        /* 
         _timer -= 1 * Time.deltaTime;
 
-        if(_timer <= 0)
+       if (_timer <= 0 && !_resetNext)
         {
             transform.position = new Vector2(transform.position.x + 1, transform.position.y);
             _timer = _playTime;
         }
 
-        if (_resetNext)
+        else if (_timer <= 0 && _resetNext)
         {
             ResetPlayLine();
+            _timer = _playTime;
         }
+        */
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Note"))
         {
-            _camAudioSource.PlayOneShot(_shortNotes[GetNoteFromHeight(collision.transform.position.y)]);
+            FMODUnity.RuntimeManager.PlayOneShot(GetNoteFromHeight(collision.transform.position.y));
+            //_audioSource.PlayOneShot(_shortNotes[GetNoteFromHeight(collision.transform.position.y)]);
         }
 
         if (collision.CompareTag("NoteMuteable") && !muted)
         {
-            _camAudioSource.PlayOneShot(_shortNotes[GetNoteFromHeight(collision.transform.position.y)]);
+            FMODUnity.RuntimeManager.PlayOneShot(GetNoteFromHeight(collision.transform.position.y));
+            //_audioSource.PlayOneShot(_shortNotes[GetNoteFromHeight(collision.transform.position.y)]);
         }
 
         if (collision.CompareTag("PlayLine"))
@@ -68,29 +78,29 @@ public class PlayLineController : MonoBehaviour
         }
     }
 
-    private int GetNoteFromHeight(float y)
+    private string GetNoteFromHeight(float y)
     {
         switch (y)
         {
             case -3.5f:
-                return 0;
+                return "event:/CNotePlay";
             case -2.5f:
-                return 1;
+                return "event:/DNotePlay";
             case -1.5f:
-                return 2;
+                return "event:/ENotePlay";
             case -0.5f:
-                return 3;
+                return "event:/FNotePlay";
             case 0.5f:
-                return 4;
+                return "event:/GNotePlay";
             case 1.5f:
-                return 5;
+                return "event:/ANotePlay";
             case 2.5f:
-                return 6;
+                return "event:/BNotePlay";
             case 3.5f:
-                return 7;
+                return "event:/C2NotePlay";
         }
 
-        return 0;
+        return "event:/CNotePlay";
     }
 
     public void ResetPlayLine()
@@ -98,5 +108,16 @@ public class PlayLineController : MonoBehaviour
         _resetNext = false;
         _gameManager.CheckGoals();
         transform.position = _startPos;
+    }
+
+    public void AdvanceLine()
+    {
+        if (_resetNext)
+        {
+            ResetPlayLine();
+            return;
+        }
+
+        transform.position = new Vector2(transform.position.x + 1, transform.position.y);
     }
 }
