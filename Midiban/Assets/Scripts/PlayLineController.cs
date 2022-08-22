@@ -120,4 +120,9 @@ public class PlayLineController : MonoBehaviour
 
         transform.position = new Vector2(transform.position.x + 1, transform.position.y);
     }
+
+    private void OnDestroy()
+    {
+        MusicManager.beatUpdated -= AdvanceLine;
+    }
 }

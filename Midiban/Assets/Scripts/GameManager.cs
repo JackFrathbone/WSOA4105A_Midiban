@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] GameObject _menu;
+    [SerializeField] GameObject _endScreen;
 
     [SerializeField] PlayLineController _playLineController;
 
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
         if (_gamePassed)
         {
             //You win
-            LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+            _endScreen.SetActive(true);
         }
 
         bool passed = true;
@@ -86,6 +87,11 @@ public class GameManager : MonoBehaviour
     public void LoadLevel(int i)
     {
         SceneManager.LoadScene(i);
+    }
+
+    public void LoadNextLevel()
+    {
+        LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void QuitGame()
