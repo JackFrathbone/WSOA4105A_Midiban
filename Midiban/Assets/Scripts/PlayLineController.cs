@@ -24,7 +24,7 @@ public class PlayLineController : MonoBehaviour
     private bool _resetNext;
 
     [Header("Data")]
-    private Vector2 _startPos;
+    [SerializeField] Transform _startPos;
     private float _timer;
 
     private void Start()
@@ -32,8 +32,6 @@ public class PlayLineController : MonoBehaviour
         //_audioSource = GameObject.FindGameObjectWithTag("AudioController").GetComponent<StudioEventEmitter>();
 
         _gameManager = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
-
-        _startPos = transform.position;
         _timer = 1;
 
         MusicManager.beatUpdated += AdvanceLine;
@@ -107,7 +105,7 @@ public class PlayLineController : MonoBehaviour
     {
         _resetNext = false;
         _gameManager.CheckGoals();
-        transform.position = _startPos;
+        transform.position = _startPos.position;
     }
 
     public void AdvanceLine()

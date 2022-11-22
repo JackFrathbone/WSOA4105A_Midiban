@@ -52,12 +52,6 @@ public class GameManager : MonoBehaviour
 
     public void CheckGoals()
     {
-        if (_gamePassed)
-        {
-            //You win
-            _endScreen.SetActive(true);
-        }
-
         bool passed = true;
 
         foreach(NoteGoal goal in _noteGoals)
@@ -71,6 +65,7 @@ public class GameManager : MonoBehaviour
         if (passed)
         {
             _gamePassed = true;
+            _endScreen.SetActive(true);
         }
         else
         {
@@ -101,6 +96,11 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
+    }
+
+    public void PlayAudioOneShot(string eventReference)
+    {
+        FMODUnity.RuntimeManager.PlayOneShot(eventReference);
     }
 
     public void QuitGame()

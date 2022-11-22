@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator WaitAndMove()
     {
-        yield return new WaitForSecondsRealtime(0.3f);
+        yield return new WaitForSecondsRealtime(0.5f);
         _moveStop = false;
     }
 }
